@@ -1,0 +1,198 @@
+\documentclass[a4paper,draft,12pt]{article}
+%\usepackage[latin1]{inputenc} %acentuacao com comandos
+\usepackage[utf8x]{inputenc} %acentuacao no teclado
+%\usepackage[brazil]{babel}
+\usepackage{indentfirst}
+\usepackage{amsfonts}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{makeidx}
+%-----------------------------------------------------------------------
+% Tamanho da mancha
+\textwidth 15cm
+\textheight 24cm
+%-----------------------------------------------------------------------
+% Tamanho das margens
+\topmargin -1cm
+\oddsidemargin 7mm
+
+%---------------------------------------------------------------------
+
+%---------------------------------------------------------------------
+% To-be-supplied
+%---------------------------------------------------------------------
+\newcounter{tbsnr}
+\newenvironment{tbs}
+{\addtocounter{tbsnr}{1}\par\bigskip \noindent\fbox{\thetbsnr}
+\hspace*{\fill}\begin{minipage}{10cm}\tt}
+{\end{minipage}\hspace*{\fill}\bigskip}
+\newcommand{\tb}[1]{\begin{tbs}{#1}\end{tbs}}
+\newcommand{\hide}[1]{{}}
+%-------------------------------------------------------------------
+
+\newtheorem{defin}{Definição}[section]
+\newenvironment{Def}{\begin{defin}\em \ \ }{\end{defin}}
+\newcounter{Def}
+
+\newtheorem{exemplo}{Exemplo}[section]
+\newenvironment{Explo}{\begin{exemplo}\em \ \ }{\end{exemplo}}
+\newcounter{Explo}
+
+\newtheorem{teorema}{Teorema}[section]
+\newenvironment{Teor}{\begin{teorema}\em \ \ }{\end{teorema}}
+\newcounter{Teor}
+
+\newtheorem{lema}{Lema}[section]
+\newenvironment{Lem}{\begin{teorema}\em \ \ }{\end{teorema}}
+\newcounter{Lem}
+
+\newcommand{\betM}[1]{{[\![}#1{]\!]_{\gM}}}
+\newcommand{\gM}{\fra{M}}
+\newcommand{\fra}[1]{{\mathfrak{#1}}}
+%---------------------------------------------------------------------
+% In proofs
+%---------------------------------------------------------------------
+  % PROOF ENVIRONMENT (from PT)
+  % it puts a black box (or whatever \markendofproof) at the end of
+  % each proof, unless the author has already done so with the
+  % command \qed.
+  \def\proof{\followon{Prova}}
+  \def\endproof{\ifSuppressEndOfProva\global\SuppressEndOfProvafalse
+  \else\xqed\fi\endfollowon}
+  \def\followon#1{\trivlist\item[\hskip\labelsep{\sc#1}]}
+%  \def\followon#1{\trivlist\item[\hskip\labelsep{\sc#1.}]}
+  \def\endfollowon{\endtrivlist}
+  % command to push black box to right of page
+  \def\pushright#1{{\parfillskip=0pt\widowpenalty=10000
+  \displaywidowpenalty=10000\finalhyphendemerits=0\leavevmode\unskip
+  \nobreak\hfil\penalty50\hskip.2em\null\hfill{#1}\par}}
+  % command to force early end of proof marker.
+  %This is used if the end of proof marker would otherwise come out
+  %in the wrong place.
+  \def\qed{\xqed\global\SuppressEndOfProvatrue}
+  \newif\ifSuppressEndOfProva\SuppressEndOfProvafalse
+  \def\xqed{\pushright\markendofprova}
+  \def\markendofprova{\rule{1.3217ex}{1.3217ex}}
+%---------------------------------------------------------------------
+
+%-----------------------------------------------------------------------
+\begin{document}
+%-----------------------------------------------------------------------
+\thispagestyle{empty}
+%-----------------------------------------------------------------------
+% Espaco entre as linhas
+%\baselineskip 6mm %espaco um
+%\baselineskip 7mm
+\baselineskip 7.5mm %espaco um e meio
+%\baselineskip 9mm %espaco duplo
+%-----------------------------------------------------------------------
+
+\title{\bf Soap Bubbles Attack \\ \vspace{3mm}\large Game Design Document}
+\author{\emph{Euller Macena e Mariana Ferreira}\\ \small LabJogos, Turma AA}
+\date{ }
+
+%---------------------------------------------------------------------
+\maketitle
+%---------------------------------------------------------------------
+
+%\begin{abstract}
+%High concept
+%\end{abstract}
+%
+%\bigskip
+%\tableofcontents
+
+\vfill
+
+\bigskip
+\bigskip
+
+\begin{center}
+{\bf\large High Concept}
+\bigskip
+
+{\parbox{13cm}{\begin{quotation}\large Jogo \emph{tower defense} que se passa em um zoológico, com animais estourando bolhas de sabão feita por crianças.\end{quotation}}}
+\end{center}
+
+\bigskip
+\bigskip
+
+\vfill
+
+%---------------------------------------------------------------------
+\section{História}
+%---------------------------------------------------------------------
+
+Você está tranquilamente passeando pelo zoológico quando crianças começam a brincar de soprar bolinhas de sabão nos seus olhos! Com seus poderes de falar com animais você os convoca para te ajudar a se proteger.
+
+\vfill
+
+%---------------------------------------------------------------------
+\section{Gameplay}
+%---------------------------------------------------------------------
+
+É um jogo no estilo \emph{tower defense}. Bolhas de sabão de diferentes cores surgem num canto da tela e seguem por um caminho. Você deve escolher alguns animais para estourá-las antes que alcancem seus olhos. A cada cor de bolha de sabão o nível vai aumentando e vai ficando mais difícil estourar. Seus olhos vão ficando mais vermelhos quando as bolhas te acertam.
+
+\bigskip
+\pagebreak
+%---------------------------------------------------------------------
+\section{Interface}
+%---------------------------------------------------------------------
+Soap Bubbles Attack possui duas telas, a inicial e a tela principal, onde o jogo realmente acontece.
+
+\vspace{20cm}
+
+O HUD-1 é o menu e o valor em dinheiro que você ganha a cada bolha estourada. O HUD-2 mostra sua vida. No HUD-3 ficam os animais para serem comprados.
+
+%---------------------------------------------------------------------
+\section{Controles}
+%---------------------------------------------------------------------
+Soap Bubbles Attack precisa apenas dos seguintes controles:
+\begin{itemize}
+\item Mouse para posicionar os animais.
+\item Barra de espaço para dar \emph{pause} no jogo.
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Áudio}
+%---------------------------------------------------------------------
+A experiência de jogo de Soap Bubbles Attack é valorizada pelo áudio nos momento chaves do jogo:
+\begin{itemize}
+\item Música de fundo.
+\item Sons de bolhas estourando cada vez que são acertadas.
+\item Som de moedas quando uma compra é feita.
+\item Som ao final para \emph{game over}.
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Arte Conceito}
+%---------------------------------------------------------------------
+
+\vspace{8cm}
+Esses são alguns dos animais que te ajudam a se defender das bolhas de sabão nos olhos.
+%---------------------------------------------------------------------
+\section{Referências}
+%---------------------------------------------------------------------
+Alguns jogos que nos inspiraram foram:
+
+\begin{itemize}
+\vspace{8cm}
+\item[] Bloons Tower Defense
+\vspace{8cm}
+\item[] Fieldrunners 2
+\end{itemize}
+
+%-----------------------------------------------------------------------
+%\begin{thebibliography}{5}
+
+%\bibitem{dolittle} Dr. Dolittle
+
+%\end{thebibliography}
+
+%\tb{falta colocar referências para Dr. Dolittle}
+
+%-----------------------------------------------------------------------
+\end{document}
+%-----------------------------------------------------------------------

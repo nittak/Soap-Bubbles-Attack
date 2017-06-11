@@ -8,22 +8,21 @@ window.set_title("Soap Bubbles Attack")
 mouse=Window.get_mouse()
 teclado=Window.get_keyboard()
 
-game_state=0
+game_state=1
 
 #Menu
-menu=GameImage("Menu.jpg")
+#menu=GameImage("Menu.jpg")
 #menu1.x=window.width/2-menu1.width/2
 #menu1.y=window.height/2-menu1.height/2
-bolhas=Sprite("bolhas.gif")
+#bolhas=Sprite("bolhas.gif")
 
 
-start=GameImage("start.png")
+#start=GameImage("start.png")
 #start.x=windowmenu.width/2-start.width/2
 #start.y=windowmenu.height/2-start.height/2
 
 #Mapa do jogo
 background = GameImage("background.png")
-caminho= GameImage("caminho.png")
 
 #Animais para compra
 bird_c = GameImage("bird.png")
@@ -41,7 +40,6 @@ bird.y=8*window.height/21
 elephant.x=8*window.width/21
 elephant.y=10*window.height/21
 
-
 #Torre a ser defendida
 eye=Sprite("eye.png")
 
@@ -49,12 +47,11 @@ eye=Sprite("eye.png")
 b1=Sprite("b1.png")
 b2=Sprite("b2.png")
 b3=Sprite("b3.png")
+
 b1.x=window.width/21 - b1.width
 b1.y=4*window.height/21
 
-
-
-#Posição animais de compra.
+#Posição animais de compra
 bird_c.x = window.width / 10
 bird_c.y = window.height - bird_c.height
 llama_c.x = 2 * window.width / 10
@@ -62,20 +59,21 @@ llama_c.y = window.height - llama_c.height
 elephant_c.x = 3 * window.width / 10
 elephant_c.y = window.height - elephant_c.height
 
-#Posição da base.
+#Posição da base
 eye.x=window.width - eye.width
 eye.y=18*(window.height/21)  - eye.height
-
 
 speed_x=100
 speed_y=100
 speed=0
+
 while True:
+
+    '''
     while game_state==0:
         menu.draw()
         bolhas.draw()
         start.draw()
-
 
         if mouse.is_button_pressed(1):
             if mouse.is_over_object(start):
@@ -84,7 +82,8 @@ while True:
             window.close()
 
         window.update()
-
+    '''
+    
     while game_state==1:
 
         background.draw()
@@ -95,7 +94,6 @@ while True:
         bird.draw()
         llama.draw()
         elephant.draw()
-        caminho.draw()
 
         b1.move_x(speed_x * window.delta_time())
 
@@ -119,7 +117,7 @@ while True:
         if b1.y>=16.7*window.height/21:
             speed_x=100
             speed_y=0
-        b1.draw()
 
+        b1.draw()
 
         window.update()

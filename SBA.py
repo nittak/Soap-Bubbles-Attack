@@ -96,26 +96,26 @@ def tiros_llama():
     for k in TL:
         k.y = k.y + (speed * window.delta_time())
 
-def destroi_bolhas(vetor, grupo, tipo):
+def destroi_bolhas(vetor, grupo, tipo, vida):
     global ponto
     for i in range(len(vetor)):
         for j in grupo:
             if vetor[i].collided(j):
-                if tipo==1:
+                if vida==1:
                     grupo.remove(j)
+                    ponto += tipo
+                    print(ponto)
                 else:
-                    tipo=tipo-1
-                ponto+=tipo
-                print(ponto)
+                    vida=vida-1
 
 def tiros_elephant():
     global speed
     global conte
-    if conte > 3:
+    if conte > 2:
         conte = 0
         for i in range(3):
             t2 = Sprite("tiro3r.png")
-            t2.set_position((i ** 3 + i + 5) * window.width / 22, (i + 12) * window.width / 22 - elephantc.height)
+            t2.set_position((i + 1) *5* window.width / 20, (i + 12) * window.width / 22 - elephantc.height)
             TE.append(t2)
     conte += window.delta_time()
     for k in TE:
@@ -180,12 +180,12 @@ while True:
 
         tiros_llama()
         tiros_elephant()
-        destroi_bolhas(TL, bolhas1, 1)
-        destroi_bolhas(TL, bolhas2, 2)
-        destroi_bolhas(TL, bolhas3, 3)
-        destroi_bolhas(TE, bolhas1, 1)
-        destroi_bolhas(TE, bolhas2, 2)
-        destroi_bolhas(TE, bolhas3, 3)
+        destroi_bolhas(TL, bolhas1, 1, 1)
+        destroi_bolhas(TL, bolhas2, 2, 2)
+        destroi_bolhas(TL, bolhas3, 3, 3)
+        destroi_bolhas(TE, bolhas1, 1, 1)
+        destroi_bolhas(TE, bolhas2, 2, 2)
+        destroi_bolhas(TE, bolhas3, 3, 3)
 
 
         for i in range(len(TE)):

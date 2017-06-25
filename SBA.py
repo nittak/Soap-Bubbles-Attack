@@ -17,11 +17,14 @@ game_state = 0
 # bolhas=Sprite("bolhas.gif")
 
 start=GameImage("start.png")
+gameover = GameImage('gameover.png')
 start.x=window.width/2-start.width/2
 start.y=1*window.height/4-start.height/2
+gameover.x=window.width/2-start.width/2
+gameover.y=1*window.height/4-start.height/2
 
 # Mapa do jogo
-background = GameImage("background.jpg")
+background = GameImage("background.png")
 
 # Animais para compra
 birdc = GameImage("birdc.png")
@@ -61,7 +64,6 @@ bolhas3 = []
 t = 1
 delta = window.delta_time()
 
-
 def cria_bolhas(bolha, grupo, tipo):
     global t
     global cont
@@ -75,7 +77,6 @@ def cria_bolhas(bolha, grupo, tipo):
 
         grupo.append(bolha)
 
-
     for i in grupo:
         i.x += speed * window.delta_time()
         if i.x > window.width - 3 * bolha.width:
@@ -83,24 +84,21 @@ def cria_bolhas(bolha, grupo, tipo):
             cont+=tipo
     t += window.delta_time()
 
-
-
-
-
-
 B = []  # vetor de birds
 L = []  # vetor de llamas
 E = []  # vetor de elephants
 
 cont=0
+
 while True:
 
     while game_state==0:
         background.draw()
         start.draw()
-        if mouse.is_button_pressed(1):
-            if mouse.is_over_object(start):
-                game_state = 1
+        if mouse.is_button_pressed(1) and mouse.is_over_object(start) or keyboard.key_pressed("ENTER"):
+            game_state = 1
+        if keyboard.key_pressed("ESC"):
+            window.close()
         window.update()
 
     while game_state == 1:
@@ -136,31 +134,31 @@ while True:
 
         if cont<10:
             cria_bolhas(b1, bolhas1, 1)
-
-
             for i in range(len(bolhas1)):
                 bolhas1[i].draw()
 
+        if delta > 5 and cont<10:
+            cria_bolhas(b2, bolhas2, 2)
+            for i in range(len(bolhas2)):
+                bolhas2[i].draw()
 
 
-        if delta > 5:
-            if cont<10:
-                cria_bolhas(b2, bolhas2, 2)
-                for i in range(len(bolhas2)):
-                    bolhas2[i].draw()
+        if delta > 15 and cont<10:
+            cria_bolhas(b3, bolhas3, 3)
+            for i in range(len(bolhas3)):
+                bolhas3[i].draw()
 
-
-        if delta > 15:
-            if cont<10:
-                cria_bolhas(b3, bolhas3, 3)
-                for i in range(len(bolhas3)):
-                    bolhas3[i].draw()
-
-
-
+        if cont >= 10:
+            game_state = 3
+            cont=0
+            
         if keyboard.key_pressed("ESC"):
             window.close()
 
-
-
         window.update()
+
+        while game_state == 3:
+            gameover.draw()
+            if keyboard.key_pressed("ESC"):
+                window.close()
+            window.update()

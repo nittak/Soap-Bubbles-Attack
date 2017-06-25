@@ -114,17 +114,17 @@ def tiros_elephant():
         k.x = k.x + (-speed * window.delta_time())
         k.y = k.y + 2*(-speed * window.delta_time())
 
-def destroi_bolhas(vetor, grupo, tipo):
+def destroi_bolhas(vetor, grupo, tipo, vida):
     global ponto
     for i in range(len(vetor)):
         for j in grupo:
             if vetor[i].collided(j):
-                if tipo==1:
+                if vida==1:
                     grupo.remove(j)
+                    ponto += tipo
+                    print(ponto)
                 else:
-                    tipo=tipo-1
-                ponto+=tipo
-                print(ponto)   
+                    vida=vida-1
 
 while True:
 
@@ -189,12 +189,12 @@ while True:
         tiros_llama()
         tiros_elephant()
         
-        destroi_bolhas(TL, bolhas1, 1)
-        destroi_bolhas(TL, bolhas2, 2)
-        destroi_bolhas(TL, bolhas3, 3)
-        destroi_bolhas(TE, bolhas1, 1)
-        destroi_bolhas(TE, bolhas2, 2)
-        destroi_bolhas(TE, bolhas3, 3)
+        destroi_bolhas(TL, bolhas1, 1,1)
+        destroi_bolhas(TL, bolhas2, 2,2)
+        destroi_bolhas(TL, bolhas3, 3,3)
+        destroi_bolhas(TE, bolhas1, 1,1)
+        destroi_bolhas(TE, bolhas2, 2,2)
+        destroi_bolhas(TE, bolhas3, 3,3)
 
 
         for i in range(len(TE)):

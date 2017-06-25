@@ -3,7 +3,6 @@ from PPlay.sprite import *
 from PPlay.gameimage import *
 
 window = Window(1280, 840)
-# windowmenu= Window(640,405)
 window.set_title("Soap Bubbles Attack")
 mouse = Window.get_mouse()
 keyboard = window.get_keyboard()
@@ -11,20 +10,15 @@ keyboard = window.get_keyboard()
 game_state = 0
 
 # Menu
-# menu=GameImage("Menu.jpg")
-# menu1.x=window.width/2-menu1.width/2
-# menu1.y=window.height/2-menu1.height/2
-# bolhas=Sprite("bolhas.gif")
-
-start=GameImage("start.png")
+start = GameImage("start.png")
 gameover = GameImage('gameover.png')
-start.x=window.width/2-start.width/2
-start.y=1*window.height/4-start.height/2
-gameover.x=window.width/2-start.width/2
-gameover.y=1*window.height/4-start.height/2
+start.x = window.width / 2 - start.width / 2
+start.y = 1 * window.height / 4 - start.height / 2
+gameover.x = window.width / 2 - start.width / 2
+gameover.y = 1 * window.height / 4 - start.height / 2
 
 # Mapa do jogo
-background = GameImage("background.png")
+background = GameImage("background.jpg")
 
 # Animais para compra
 birdc = GameImage("birdc.png")
@@ -54,7 +48,7 @@ b3 = Sprite("b3.png")
 
 # Posição da base
 eye.x = window.width - eye.width
-eye.y = 1.05*window.height / 2 - eye.height
+eye.y = 1.05 * window.height / 2 - eye.height
 
 speed = 100
 
@@ -63,6 +57,7 @@ bolhas2 = []
 bolhas3 = []
 t = 1
 delta = window.delta_time()
+
 
 def cria_bolhas(bolha, grupo, tipo):
     global t
@@ -81,18 +76,44 @@ def cria_bolhas(bolha, grupo, tipo):
         i.x += speed * window.delta_time()
         if i.x > window.width - 3 * bolha.width:
             grupo.remove(i)
-            cont+=tipo
+            cont += tipo
     t += window.delta_time()
+
 
 B = []  # vetor de birds
 L = []  # vetor de llamas
 E = []  # vetor de elephants
 
-cont=0
+cont = 0 #Contador para o game over
+
+TL = [] #Vetor de tiros llama
+contl=1
+ponto=0
+def tiros_llama():
+    global speed
+    global contl
+    if contl > 3:
+        contl=0
+        for i in range (3):
+            t1=Sprite("tiro.png")
+            t1.set_position((i + 1) * 5 * window.width / 22, (i + 2) * window.width / 22 - llamac.height )
+            TL.append(t1)
+    contl+=window.delta_time()
+    for k in TL:
+        k.y = k.y + (speed * window.delta_time())
+
+def destroi_bolhas(TL, grupo, tipo):
+    global ponto
+    for i in range(len(TL)):
+        for j in grupo:
+            if TL[i].collided(j):
+                grupo.remove(j)
+                ponto+=tipo
+                print(ponto)
 
 while True:
 
-    while game_state==0:
+    while game_state == 0:
         background.draw()
         start.draw()
         if mouse.is_button_pressed(1) and mouse.is_over_object(start) or keyboard.key_pressed("ENTER"):
@@ -132,26 +153,36 @@ while True:
 
         delta += window.delta_time()
 
-        if cont<10:
+        if cont < 10:
             cria_bolhas(b1, bolhas1, 1)
             for i in range(len(bolhas1)):
                 bolhas1[i].draw()
 
-        if delta > 5 and cont<10:
+        if delta > 5 and cont < 10:
             cria_bolhas(b2, bolhas2, 2)
             for i in range(len(bolhas2)):
                 bolhas2[i].draw()
 
-
-        if delta > 15 and cont<10:
+        if delta > 15 and cont < 10:
             cria_bolhas(b3, bolhas3, 3)
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()
 
         if cont >= 10:
             game_state = 3
-            cont=0
-            
+            cont = 0
+
+        tiros_llama()
+        destroi_bolhas(TL, bolhas1, 1)
+        destroi_bolhas(TL, bolhas2, 2)
+        destroi_bolhas(TL, bolhas3, 3)
+
+
+        for i in range(len(TL)):
+            TL[i].draw()
+
+
+
         if keyboard.key_pressed("ESC"):
             window.close()
 

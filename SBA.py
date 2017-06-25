@@ -16,18 +16,17 @@ game_state=1
 #menu1.y=window.height/2-menu1.height/2
 #bolhas=Sprite("bolhas.gif")
 
-
 #start=GameImage("start.png")
 #start.x=windowmenu.width/2-start.width/2
 #start.y=windowmenu.height/2-start.height/2
 
 #Mapa do jogo
-background = GameImage("background_line.png")
+background = GameImage("background.png")
 
 #Animais para compra
-bird_c = GameImage("bird.png")
-llama_c = GameImage("llama.png")
-elephant_c = GameImage("elephant.png")
+birdc = GameImage("birdc.png")
+llamac = GameImage("llamac.png")
+elephantc = GameImage("elephantc.png")
 
 #Animais de torre
 bird = Sprite("bird.png")
@@ -36,9 +35,11 @@ elephant = Sprite("elephant.png")
 
 #Demonstração
 bird.x = 17*window.width/21 - bird.width
-bird.y = 8*window.height/21
-elephant.x = 8*window.width/21
-elephant.y = 10*window.height/21
+bird.y = 9*window.height/22 - bird.height
+llama.x = 13*window.width/21 - llama.width
+llama.y = 9*window.height/22 - llama.height
+elephant.x = 15*window.width/22
+elephant.y = 15*window.height/22 - elephant.height
 
 #Torre a ser defendida
 eye = Sprite("eye.png")
@@ -48,19 +49,11 @@ b1 = Sprite("b1.png")
 b2 = Sprite("b2.png")
 b3 = Sprite("b3.png")
 
-#Posição animais de compra
-bird_c.x = window.width / 10
-bird_c.y = window.height - bird_c.height
-llama_c.x = 2 * window.width / 10
-llama_c.y = window.height - llama_c.height
-elephant_c.x = 3 * window.width / 10
-elephant_c.y = window.height - elephant_c.height
-
 #Posição da base
 eye.x = window.width - eye.width
 eye.y = window.height/2 - eye.height
 
-speed = 200
+speed = 100
 
 bolhas1 = []
 bolhas2 = []
@@ -68,6 +61,7 @@ bolhas3 = []
 t = 1
 delta = window.delta_time()
 
+    
 def cria_bolhas(bolha, grupo, tipo):
     global t
 
@@ -87,15 +81,38 @@ def cria_bolhas(bolha, grupo, tipo):
             grupo.remove(i)
 
     t += window.delta_time()
-    
+
+B = [] #vetor de birds
+L = [] #vetor de llamas
+E = [] #vetor de elephants
+
 while True:
  
     while game_state==1:
-
         background.draw()
-        bird_c.draw()
-        llama_c.draw()
-        elephant_c.draw()
+                
+        for i in range(3):
+            B.append(birdc)
+            B[i].x = (i+1)*4*window.width/22
+            if i == 1:
+                B[i].y = 6*window.width/22 - birdc.height
+            else:
+                B[i].y = 9*window.width/22 - birdc.height
+            B[i].draw()
+
+        for i in range(3):
+            L.append(llamac)
+            L[i].x = (i+1)*5*window.width/22
+            L[i].y = (i+2)*window.width/22 - llamac.height
+            L[i].draw()        
+        
+        for i in range(3):
+            E.append(elephantc)
+            E[i].x = (i**3+i+5)*window.width/22
+            E[i].y = (i+12)*window.width/22 - elephantc.height
+            E[i].draw()        
+        
+        
         eye.draw()
         bird.draw()
         llama.draw()
@@ -108,12 +125,12 @@ while True:
         for i in range(len(bolhas1)):
             bolhas1[i].draw()
 
-        if delta > 3: 
+        if delta > 5: 
             cria_bolhas(b2,bolhas2,2)
             for i in range(len(bolhas2)):
                 bolhas2[i].draw()
 
-        if delta > 5: 
+        if delta > 15: 
             cria_bolhas(b3,bolhas3,3)
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()

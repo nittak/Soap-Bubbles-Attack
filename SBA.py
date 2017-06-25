@@ -1,6 +1,7 @@
 from PPlay.window import *
 from PPlay.sprite import *
 from PPlay.gameimage import *
+from PPlay.sound import *
 
 window = Window(1280, 840)
 window.set_title("Soap Bubbles Attack")
@@ -42,6 +43,8 @@ b3 = Sprite("b3.png")
 eye.x = window.width - eye.width
 eye.y = 1.05 * window.height / 2 - eye.height
 
+#sound = Sound('bubblesound.ogg')
+
 speed = 100
 
 bolhas1 = []
@@ -82,11 +85,12 @@ TE = [] #Vetor de tiros elephant
 contl=1
 conte=1
 ponto=0
+teclado = 't' #para só atirar um animal de cada vez
 
 def tiros_llama():
     global speed
     global contl
-    if contl > 3:
+    if contl > 3 and keyboard.key_pressed("S") and teclado == 's':
         contl=0
         for i in range (3):
             t1=Sprite("tiro.png")
@@ -96,32 +100,31 @@ def tiros_llama():
     for k in TL:
         k.y = k.y + (speed * window.delta_time())
 
-def destroi_bolhas(vetor, grupo, tipo, vida):
-    global ponto
-    for i in range(len(vetor)):
-        for j in grupo:
-            if vetor[i].collided(j):
-                if vida==1:
-                    grupo.remove(j)
-                    ponto += tipo
-                    print(ponto)
-                else:
-                    vida=vida-1
-
 def tiros_elephant():
     global speed
     global conte
-    if conte > 2:
+    if conte > 3 and keyboard.key_pressed("A") and teclado == 'a':
         conte = 0
         for i in range(3):
             t2 = Sprite("tiro3r.png")
-            t2.set_position((i + 1) *5* window.width / 20, (i + 12) * window.width / 22 - elephantc.height)
+            t2.set_position((i ** 3 + i + 5) * window.width / 22, (i + 12) * window.width / 22 - elephantc.height)
             TE.append(t2)
     conte += window.delta_time()
     for k in TE:
         k.x = k.x + (-speed * window.delta_time())
         k.y = k.y + 2*(-speed * window.delta_time())
 
+def destroi_bolhas(vetor, grupo, tipo):
+    global ponto
+    for i in range(len(vetor)):
+        for j in grupo:
+            if vetor[i].collided(j):
+                if tipo==1:
+                    grupo.remove(j)
+                else:
+                    tipo=tipo-1
+                ponto+=tipo
+                print(ponto)   
 
 while True:
 
@@ -177,15 +180,21 @@ while True:
         if cont >= 10:
             game_state = 3
             cont = 0
-
+            
+        if keyboard.key_pressed("A"):
+            teclado = 'a'
+        elif keyboard.key_pressed("S"):
+            teclado = 's'
+        
         tiros_llama()
         tiros_elephant()
-        destroi_bolhas(TL, bolhas1, 1, 1)
-        destroi_bolhas(TL, bolhas2, 2, 2)
-        destroi_bolhas(TL, bolhas3, 3, 3)
-        destroi_bolhas(TE, bolhas1, 1, 1)
-        destroi_bolhas(TE, bolhas2, 2, 2)
-        destroi_bolhas(TE, bolhas3, 3, 3)
+        
+        destroi_bolhas(TL, bolhas1, 1)
+        destroi_bolhas(TL, bolhas2, 2)
+        destroi_bolhas(TL, bolhas3, 3)
+        destroi_bolhas(TE, bolhas1, 1)
+        destroi_bolhas(TE, bolhas2, 2)
+        destroi_bolhas(TE, bolhas3, 3)
 
 
         for i in range(len(TE)):

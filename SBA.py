@@ -30,14 +30,6 @@ bird = Sprite("bird.png")
 llama = Sprite("llama.png")
 elephant = Sprite("elephant.png")
 
-# Demonstração
-bird.x = 17 * window.width / 21 - bird.width
-bird.y = 9 * window.height / 22 - bird.height
-llama.x = 13 * window.width / 21 - llama.width
-llama.y = 9 * window.height / 22 - llama.height
-elephant.x = 15 * window.width / 22
-elephant.y = 15 * window.height / 22 - elephant.height
-
 # Torre a ser defendida
 eye = GameImage("eye.png")
 
@@ -57,7 +49,6 @@ bolhas2 = []
 bolhas3 = []
 t = 1
 delta = window.delta_time()
-
 
 def cria_bolhas(bolha, grupo, tipo):
     global t
@@ -91,6 +82,7 @@ TE = [] #Vetor de tiros elephant
 contl=1
 conte=1
 ponto=0
+
 def tiros_llama():
     global speed
     global contl
@@ -122,13 +114,13 @@ def tiros_elephant():
     if conte > 3:
         conte = 0
         for i in range(3):
-            t2 = Sprite("tiro2.png")
+            t2 = Sprite("tiro3r.png")
             t2.set_position((i ** 3 + i + 5) * window.width / 22, (i + 12) * window.width / 22 - elephantc.height)
             TE.append(t2)
     conte += window.delta_time()
     for k in TE:
         k.x = k.x + (-speed * window.delta_time())
-        k.y = k.y + (-speed * window.delta_time())
+        k.y = k.y + 2*(-speed * window.delta_time())
 
 
 while True:
@@ -147,11 +139,8 @@ while True:
 
         for i in range(3):
             B.append(birdc)
-            B[i].x = (i + 1) * 4 * window.width / 22
-            if i == 1:
-                B[i].y = 6 * window.width / 22 - birdc.height
-            else:
-                B[i].y = 9 * window.width / 22 - birdc.height
+            B[i].x = (i + 1.5) * 5 * window.width / 22
+            B[i].y = 9 * window.width / 22 - birdc.height
             B[i].draw()
 
         for i in range(3):
@@ -162,14 +151,11 @@ while True:
 
         for i in range(3):
             E.append(elephantc)
-            E[i].x = (i ** 3 + i + 5) * window.width / 22
+            E[i].x = (i + 1) *5* window.width / 20
             E[i].y = (i + 12) * window.width / 22 - elephantc.height
             E[i].draw()
 
         eye.draw()
-        bird.draw()
-        llama.draw()
-        elephant.draw()
 
         delta += window.delta_time()
 

@@ -71,7 +71,7 @@ def cria_bolhas(bolha, grupo, tipo):
         i.x += speed * window.delta_time()
         if i.x > window.width - 3 * bolha.width:
             grupo.remove(i)
-            cont += tipo
+            cont -= tipo
     t += window.delta_time()
 
 
@@ -79,7 +79,7 @@ B = []  # vetor de birds
 L = []  # vetor de llamas
 E = []  # vetor de elephants
 
-cont = 0  # Contador para o game over
+cont = 50  # Contador para o game over
 
 TL = []  # Vetor de tiros llama
 TE = []  # Vetor de tiros elephant
@@ -94,7 +94,7 @@ teclado = 't'  # para só atirar um animal de cada vez
 def tiros_llama():
     global speed
     global contl
-    if contl > 1 and keyboard.key_pressed("S") and teclado == 's':
+    if contl > 1.5 and keyboard.key_pressed("S") and teclado == 's':
         contl = 0
         for i in range(3):
             t1 = Sprite("tiro.png")
@@ -108,7 +108,7 @@ def tiros_llama():
 def tiros_elephant():
     global speed
     global conte
-    if conte > 2 and keyboard.key_pressed("A") and teclado == 'a':
+    if conte > 1.75 and keyboard.key_pressed("A") and teclado == 'a':
         conte = 0
         for i in range(3):
             t2 = Sprite("tiro3r.png")
@@ -122,7 +122,7 @@ def tiros_elephant():
 def tiros_bird():
     global speed
     global contp
-    if contp > 3  and keyboard.key_pressed("W") and teclado == 'w':
+    if contp > 2  and keyboard.key_pressed("W") and teclado == 'w':
         contp = 0
         for i in range(3):
             t3 = Sprite("tiro2.png")
@@ -143,7 +143,7 @@ def destroi_bolhas(vetor, grupo, tipo, vida):
                 if vida == 1:
                     grupo.remove(j)
                     ponto += tipo
-                    print(ponto)
+
                 else:
                     vida = vida - 1
 
@@ -184,24 +184,24 @@ while True:
 
         delta += window.delta_time()
 
-        if cont < 10:
-            cria_bolhas(b1, bolhas1, 1)
-            for i in range(len(bolhas1)):
-                bolhas1[i].draw()
 
-        if delta > 5 and cont < 10:
+        cria_bolhas(b1, bolhas1, 1)
+        for i in range(len(bolhas1)):
+            bolhas1[i].draw()
+
+        if delta > 5:
             cria_bolhas(b2, bolhas2, 2)
             for i in range(len(bolhas2)):
                 bolhas2[i].draw()
 
-        if delta > 15 and cont < 10:
+        if delta > 15:
             cria_bolhas(b3, bolhas3, 3)
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()
 
-        if cont >= 10:
+        if cont <= 0:
             game_state = 3
-            cont = 0
+            cont = 50
 
         if keyboard.key_pressed("A"):
             teclado = 'a'
@@ -220,7 +220,7 @@ while True:
         destroi_bolhas(TL, bolhas3, 3, 3)
         destroi_bolhas(TE, bolhas1, 1, 1)
         destroi_bolhas(TE, bolhas2, 2, 2)
-        destroi_bolhas(TE, bolhas3, 3, 2)
+        destroi_bolhas(TE, bolhas3, 3, 3)
         destroi_bolhas(TP, bolhas1, 1, 1)
         destroi_bolhas(TP, bolhas2, 2, 1)
         destroi_bolhas(TP, bolhas3, 3, 1)
@@ -235,6 +235,10 @@ while True:
 
         if keyboard.key_pressed("ESC"):
             window.close()
+
+        window.draw_text("Ponto: "+ str(ponto), 3*window.width/4, 0 , 20, (255,255,255), font_name="Rockwell", bold=True, italic=False)
+        window.draw_text("Vida: "+str(cont), 2*window.width/4, 0, 20, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
+
 
         window.update()
 

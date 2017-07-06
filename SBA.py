@@ -12,24 +12,22 @@ game_state = 0
 
 # Menu
 start = GameImage("start.png")
-gameover = GameImage('gameover1.png')
+quit1 = GameImage("quit.png")
+gameover = GameImage('gameover.png')
 start.x = window.width / 2 - start.width / 2
-start.y = window.height / 2 - 2*start.height/3
-gameover.x = window.width / 2 - gameover.width / 2
-gameover.y = window.height / 2 - gameover.height / 2
+start.y = window.height / 3 - start.height / 2
+quit1.x = window.width / 2 - quit1.width / 2
+quit1.y = 2* window.height / 3 - quit1.height / 2
+gameover.x = window.width / 2 - start.width / 2
+gameover.y = 1 * window.height / 4 - start.height / 2
 
 # Mapa do jogo
 background = GameImage("background.jpg")
 
-# Animais para compra
+# Animais
 birdc = GameImage("birdc.png")
 llamac = GameImage("llamac.png")
 elephantc = GameImage("elephantc.png")
-
-# Animais de torre
-bird = Sprite("bird.png")
-llama = Sprite("llama.png")
-elephant = Sprite("elephant.png")
 
 # Torre a ser defendida
 eye = GameImage("eye.png")
@@ -52,11 +50,13 @@ bolhas2 = []
 bolhas3 = []
 t = 1
 delta = window.delta_time()
-
+incvel=0
 
 def cria_bolhas(bolha, grupo, tipo):
     global t
-    global cont
+    global vida
+    global incvel
+    global speed
     if t >= 2:
         t = 0
 
@@ -67,19 +67,23 @@ def cria_bolhas(bolha, grupo, tipo):
 
         grupo.append(bolha)
 
+    incvel+=window.delta_time()
+    if incvel >= 100:
+        speed = speed + speed/2
+        incvel=0
     for i in grupo:
         i.x += speed * window.delta_time()
         if i.x > window.width - 3 * bolha.width:
             grupo.remove(i)
-            cont += tipo
+            vida -= tipo
     t += window.delta_time()
 
 
 B = []  # vetor de birds
 L = []  # vetor de llamas
-E = []  # vetor de elephants
+E = []  # vetor de elephantsa
 
-cont = 0  # Contador para o game over
+vida = 50  # Contador para o game over
 
 TL = []  # Vetor de tiros llama
 TE = []  # Vetor de tiros elephant
@@ -94,7 +98,7 @@ teclado = 't'  # para só atirar um animal de cada vez
 def tiros_llama():
     global speed
     global contl
-    if contl > 1 and keyboard.key_pressed("S") and teclado == 's':
+    if contl > 1.5 and keyboard.key_pressed("S") and teclado == 's':
         contl = 0
         for i in range(3):
             t1 = Sprite("tiro.png")
@@ -103,12 +107,14 @@ def tiros_llama():
     contl += window.delta_time()
     for k in TL:
         k.y = k.y + (speed * window.delta_time())
+        if k.y + k.height < 0 or k.y > window.height + k.height:
+            TL.remove(k)
 
 
 def tiros_elephant():
     global speed
     global conte
-    if conte > 2 and keyboard.key_pressed("A") and teclado == 'a':
+    if conte > 1.75 and keyboard.key_pressed("A") and teclado == 'a':
         conte = 0
         for i in range(3):
             t2 = Sprite("tiro3r.png")
@@ -116,13 +122,15 @@ def tiros_elephant():
             TE.append(t2)
     conte += window.delta_time()
     for k in TE:
-        k.x += (-speed * window.delta_time())
-        k.y += 2*(-speed * window.delta_time())
+        k.x = k.x + 2*(-speed * window.delta_time())
+        k.y = k.y + 2 * (-speed * window.delta_time())
+        if k.x+k.width<0 and k.y+k.height<0:
+            TE.remove(k)
 
 def tiros_bird():
     global speed
     global contp
-    if contp > 3  and keyboard.key_pressed("W") and teclado == 'w':
+    if contp > 2  and keyboard.key_pressed("W") and teclado == 'w':
         contp = 0
         for i in range(3):
             t3 = Sprite("tiro2.png")
@@ -131,6 +139,8 @@ def tiros_bird():
     contp += window.delta_time()
     for k in TP:
         k.y = k.y + 2 * (-speed * window.delta_time())
+        if k.y + k.height < 0 or k.y > window.height + k.height:
+            TP.remove(k)
 
 
 
@@ -143,7 +153,7 @@ def destroi_bolhas(vetor, grupo, tipo, vida):
                 if vida == 1:
                     grupo.remove(j)
                     ponto += tipo
-                    print(ponto)
+
                 else:
                     vida = vida - 1
 
@@ -153,8 +163,11 @@ while True:
     while game_state == 0:
         background.draw()
         start.draw()
+        quit1.draw()
         if mouse.is_button_pressed(1) and mouse.is_over_object(start) or keyboard.key_pressed("ENTER"):
             game_state = 1
+        if mouse.is_button_pressed(1) and mouse.is_over_object(quit1) or keyboard.key_pressed("ESC"):
+            window.close()
         if keyboard.key_pressed("ESC"):
             window.close()
         window.update()
@@ -184,24 +197,24 @@ while True:
 
         delta += window.delta_time()
 
-        if cont < 10:
-            cria_bolhas(b1, bolhas1, 1)
-            for i in range(len(bolhas1)):
-                bolhas1[i].draw()
 
-        if delta > 5 and cont < 10:
+        cria_bolhas(b1, bolhas1, 1)
+        for i in range(len(bolhas1)):
+            bolhas1[i].draw()
+
+        if delta > 5:
             cria_bolhas(b2, bolhas2, 2)
             for i in range(len(bolhas2)):
                 bolhas2[i].draw()
 
-        if delta > 15 and cont < 10:
+        if delta > 20:
             cria_bolhas(b3, bolhas3, 3)
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()
 
-        if cont >= 10:
+        if vida <= 0:
             game_state = 3
-            cont = 0
+            vida = 50
 
         if keyboard.key_pressed("A"):
             teclado = 'a'
@@ -220,7 +233,7 @@ while True:
         destroi_bolhas(TL, bolhas3, 3, 3)
         destroi_bolhas(TE, bolhas1, 1, 1)
         destroi_bolhas(TE, bolhas2, 2, 2)
-        destroi_bolhas(TE, bolhas3, 3, 2)
+        destroi_bolhas(TE, bolhas3, 3, 3)
         destroi_bolhas(TP, bolhas1, 1, 1)
         destroi_bolhas(TP, bolhas2, 2, 1)
         destroi_bolhas(TP, bolhas3, 3, 1)
@@ -236,10 +249,17 @@ while True:
         if keyboard.key_pressed("ESC"):
             window.close()
 
+        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=False, italic=False)
+        window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=False, italic=False)
+
+
         window.update()
 
-    while game_state == 3:
-        gameover.draw()
-        if keyboard.key_pressed("ESC"):
-            window.close()
-        window.update()
+        while game_state == 3:
+            background.draw()
+            window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
+            #window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
+            gameover.draw()
+            if keyboard.key_pressed("ESC"):
+                window.close()
+            window.update()

@@ -26,11 +26,6 @@ birdc = GameImage("birdc.png")
 llamac = GameImage("llamac.png")
 elephantc = GameImage("elephantc.png")
 
-# Animais de torre
-bird = Sprite("bird.png")
-llama = Sprite("llama.png")
-elephant = Sprite("elephant.png")
-
 # Torre a ser defendida
 eye = GameImage("eye.png")
 
@@ -79,7 +74,7 @@ B = []  # vetor de birds
 L = []  # vetor de llamas
 E = []  # vetor de elephants
 
-cont = 50  # Contador para o game over
+vida = 50  # Contador para o game over
 
 TL = []  # Vetor de tiros llama
 TE = []  # Vetor de tiros elephant
@@ -103,8 +98,6 @@ def tiros_llama():
     contl += window.delta_time()
     for k in TL:
         k.y = k.y + (speed * window.delta_time())
-        if k.y + k.height < 0 or k.y > window.height + k.height:
-            TL.remove(k)
 
 
 def tiros_elephant():
@@ -120,8 +113,6 @@ def tiros_elephant():
     for k in TE:
         k.x = k.x + 2*(-speed * window.delta_time())
         k.y = k.y + 2 * (-speed * window.delta_time())
-        if k.x+k.width<0 and k.y+k.height<0:
-            TE.remove(k)
 
 def tiros_bird():
     global speed
@@ -135,8 +126,6 @@ def tiros_bird():
     contp += window.delta_time()
     for k in TP:
         k.y = k.y + 2 * (-speed * window.delta_time())
-        if k.y + k.height < 0 or k.y > window.height + k.height:
-            TP.remove(k)
 
 
 
@@ -205,9 +194,9 @@ while True:
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()
 
-        if cont <= 0:
+        if vida <= 0:
             game_state = 3
-            cont = 50
+            vida = 50
 
         if keyboard.key_pressed("A"):
             teclado = 'a'
@@ -242,8 +231,8 @@ while True:
         if keyboard.key_pressed("ESC"):
             window.close()
 
-        window.draw_text("Ponto: "+ str(ponto), 3*window.width/4, 0 , 20, (255,255,255), font_name="Rockwell", bold=True, italic=False)
-        window.draw_text("Vida: "+str(cont), 2*window.width/4, 0, 20, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
+        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
+        window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
 
 
         window.update()

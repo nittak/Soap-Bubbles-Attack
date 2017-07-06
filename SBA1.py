@@ -12,9 +12,12 @@ game_state = 0
 
 # Menu
 start = GameImage("start.png")
+quit1 = GameImage("quit.png")
 gameover = GameImage('gameover.png')
 start.x = window.width / 2 - start.width / 2
-start.y = 1 * window.height / 4 - start.height / 2
+start.y = window.height / 3 - start.height / 2
+quit1.x = window.width / 2 - quit1.width / 2
+quit1.y = 2* window.height / 3 - quit1.height / 2
 gameover.x = window.width / 2 - start.width / 2
 gameover.y = 1 * window.height / 4 - start.height / 2
 
@@ -154,8 +157,11 @@ while True:
     while game_state == 0:
         background.draw()
         start.draw()
+        quit1.draw()
         if mouse.is_button_pressed(1) and mouse.is_over_object(start) or keyboard.key_pressed("ENTER"):
             game_state = 1
+        if mouse.is_button_pressed(1) and mouse.is_over_object(quit1) or keyboard.key_pressed("ESC"):
+            window.close()
         if keyboard.key_pressed("ESC"):
             window.close()
         window.update()
@@ -237,15 +243,15 @@ while True:
         if keyboard.key_pressed("ESC"):
             window.close()
 
-        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
-        window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
+        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=False, italic=False)
+        window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=False, italic=False)
 
 
         window.update()
 
         while game_state == 3:
             background.draw()
-            #window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
+            window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
             #window.draw_text("Vida: "+str(vida), 2*window.width/4, window.height/50, 30, (255, 255, 255), font_name="Rockwell", bold=True, italic=False)
             gameover.draw()
             if keyboard.key_pressed("ESC"):

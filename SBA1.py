@@ -103,6 +103,8 @@ def tiros_llama():
     contl += window.delta_time()
     for k in TL:
         k.y = k.y + (speed * window.delta_time())
+        if k.y + k.height < 0 or k.y > window.height + k.height:
+            TL.remove(k)
 
 
 def tiros_elephant():
@@ -118,6 +120,8 @@ def tiros_elephant():
     for k in TE:
         k.x = k.x + 2*(-speed * window.delta_time())
         k.y = k.y + 2 * (-speed * window.delta_time())
+        if k.x+k.width<0 and k.y+k.height<0:
+            TE.remove(k)
 
 def tiros_bird():
     global speed
@@ -131,6 +135,8 @@ def tiros_bird():
     contp += window.delta_time()
     for k in TP:
         k.y = k.y + 2 * (-speed * window.delta_time())
+        if k.y + k.height < 0 or k.y > window.height + k.height:
+            TP.remove(k)
 
 
 

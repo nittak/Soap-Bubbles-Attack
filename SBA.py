@@ -41,7 +41,7 @@ b3 = Sprite("b3.png")
 eye.x = window.width - eye.width
 eye.y = 1.05 * window.height / 2 - eye.height
 
-# sound = Sound('bubblesound.ogg')
+sound = Sound('bubblesound.ogg')
 
 speed = 100
 
@@ -74,6 +74,7 @@ def cria_bolhas(bolha, grupo, tipo):
     for i in grupo:
         i.x += speed * window.delta_time()
         if i.x > window.width - 3 * bolha.width:
+            sound.play()
             grupo.remove(i)
             vida -= tipo
     t += window.delta_time()
@@ -147,14 +148,17 @@ def tiros_bird():
 
 def destroi_bolhas(vetor, grupo, tipo, vida):
     global ponto
-    for i in range(len(vetor)):
+    for i in vetor:
         for j in grupo:
-            if vetor[i].collided(j):
+            if i.collided(j):
+                vetor.remove(i)
                 if vida == 1:
+                    sound.play()
                     grupo.remove(j)
                     ponto += tipo
 
                 else:
+                    sound.play()
                     vida = vida - 1
 
 

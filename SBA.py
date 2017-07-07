@@ -11,17 +11,18 @@ keyboard = window.get_keyboard()
 game_state = 0
 
 # Menu
-bolha1 = Sprite("b1.png")
-bolha2 = Sprite("b1.png")
 start = GameImage("start.png")
 quit1 = GameImage("quit.png")
+bolha1 = Sprite("b1.png")
+bolha2 = Sprite("b1.png")
 gameover = GameImage('gameover.png')
+
 start.x = window.width / 2 - start.width / 2
 start.y = window.height / 3 - start.height / 2
-bolha1.x = window.width / 2 - start.width / 2 - bolha1.width
-bolha1.y = window.height / 3 - start.height / 2 + bolha1.height/2
 quit1.x = window.width / 2 - quit1.width / 2
 quit1.y = 2* window.height / 3 - quit1.height / 2
+bolha1.x = window.width / 2 - start.width / 2 - bolha1.width
+bolha1.y = window.height / 3 - start.height / 2 + bolha1.height/2
 bolha2.x = window.width / 2 - quit1.width / 2
 bolha2.y = 2* window.height / 3 - quit1.height / 2 + bolha2.height/4
 gameover.x = window.width / 2 - start.width / 2
@@ -58,7 +59,7 @@ bolhas2 = []
 bolhas3 = []
 t = 1
 delta = window.delta_time()
-incvel=0
+incvel = 0
 
 def cria_bolhas(bolha, grupo, tipo):
     global t
@@ -163,7 +164,7 @@ def destroi_bolhas(vetor, grupo, tipo, vida):
 
                 else:
                     sound.play()
-                    vida = vida - 1
+                    vida -= 1
 
 
 while True:
@@ -215,12 +216,12 @@ while True:
         for i in range(len(bolhas1)):
             bolhas1[i].draw()
 
-        if delta > 5:
+        if delta > 10:
             cria_bolhas(b2, bolhas2, 2)
             for i in range(len(bolhas2)):
                 bolhas2[i].draw()
 
-        if delta > 20:
+        if delta > 25:
             cria_bolhas(b3, bolhas3, 3)
             for i in range(len(bolhas3)):
                 bolhas3[i].draw()
@@ -245,7 +246,7 @@ while True:
         destroi_bolhas(TL, bolhas2, 2, 2)
         destroi_bolhas(TL, bolhas3, 3, 3)
         destroi_bolhas(TE, bolhas1, 1, 1)
-        destroi_bolhas(TE, bolhas2, 2, 2)
+        destroi_bolhas(TE, bolhas2, 2, 1)
         destroi_bolhas(TE, bolhas3, 3, 3)
         destroi_bolhas(TP, bolhas1, 1, 1)
         destroi_bolhas(TP, bolhas2, 2, 1)
@@ -270,7 +271,7 @@ while True:
 
     while game_state == 3:
         background.draw()
-        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=True, italic=False)
+        window.draw_text("Pontos: "+ str(ponto), 3*window.width/4, window.height/50 , 30, (255,255,255), font_name="Rockwell", bold=False, italic=False)
         gameover.draw()
         if keyboard.key_pressed("ESC"):
             window.close()
